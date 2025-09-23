@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Emily">
+<meta name="dcterms.date" content="2025-09-23">
+<meta name="description" content="Seeing if ChatGPT can generate a children book">
 
-<title>Playing with LLM prompts</title>
+<title>Children Book with ChatGPT – Playing with LLM prompts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +26,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7b63c25c14df0a3a64dc3ec8b366e2a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7b63c25c14df0a3a64dc3ec8b366e2a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,79 +71,21 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Playing with LLM prompts</span>
     </a>
   </div>
@@ -153,7 +96,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Emily Park</span></a>
   </li>  
   <li class="nav-item compact">
@@ -176,302 +119,137 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Playing with LLM prompts</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Children Book with ChatGPT</h1>
+                  <div>
+        <div class="description">
+          Seeing if ChatGPT can generate a children book
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">LLMs</div>
+                <div class="quarto-category">Learning</div>
+                <div class="quarto-category">Creativity</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Emily </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 23, 2025</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Q3JlYXRpdml0eQ==">Creativity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGVhcm5pbmc=">Learning <span class="quarto-category-count">(7)</span></div><div class="category" data-category="TExNcw==">LLMs <span class="quarto-category-count">(8)</span></div><div class="category" data-category="bG9naWM=">logic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvbXB0aW5n">prompting <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<section id="prompt" class="level1">
+<h1>Prompt</h1>
+<p>I asked ChatGPT this prompt:</p>
+<pre><code>Can you make a short children book with illustrations?</code></pre>
+<p>ChatGPT answered like this:</p>
+<pre><code>Absolutely! I can create a short children’s book for you, complete with simple illustrations. To start, could you tell me:
+1) The age range you’d like it for (e.g., toddlers, early readers, 6–8 years old).
+2) The theme or lesson you’d like (e.g., friendship, kindness, adventure, trying new foods).
+3) If you’d like it to feature a specific character (like an animal, child, or magical creature).
+
+Then I can draft the story and generate illustrations for each page so it feels like a real picture book.
+Do you want me to surprise you with the theme, or would you like to choose?</code></pre>
+<p>I answered:</p>
+<pre><code>toddlers
+trying new foods
+animals</code></pre>
+<p>From there, ChatGPT drafted a short story called Benny Bunny’s Tasty Adventure. It followed a bunny who loved carrots but slowly discovered new foods—cheese, berries, and lettuce—through the encouragement of his animal friends. The text was simple, rhythmic, and age-appropriate for toddlers.</p>
+<p>ChatGPT also described illustration ideas for each page (e.g., a bunny peeking into a picnic basket, a parrot holding berries). This was helpful in imagining how the book might look.</p>
+<p>Finally, I asked if it could actually generate the illustrations. ChatGPT tried twice, but each time the image generation failed with an error.</p>
+</section>
+<section id="reflection" class="level1">
+<h1>Reflection</h1>
+<p>I liked how ChatGPT broke down the process before jumping in—it felt like a real collaboration. The story itself was charming and fit the toddler age group well. The illustration prompts were clear and could easily guide an artist.</p>
+<p>The main limitation was in the illustration generation: the system couldn’t deliver consistent images yet. Still, it showed the potential for AI to draft both text and visual concepts for a children’s book in just minutes.</p>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p>If I were to expand this experiment, I’d: * Ask for the story in rhyming verse to make it more musical for toddlers. * Request illustrations in a specific style (e.g., watercolor, collage, crayon doodles) to keep them consistent. * Explore ways to combine text and illustrations into a printable storybook layout. * Add interactive prompts for toddlers (“Point to the red berry,” “Count the carrots”). I asked ChatGPT to do so.</p>
+</section>
+<section id="rhyming-verses" class="level1">
+<h1>Rhyming Verses</h1>
+<p>This is what ChatGPT came up with:</p>
+<pre><code>Benny Bunny’s Tasty Adventure
+
+Page 1
+Text:
+Benny Bunny munched all day,
+Carrots, carrots—hip hooray!
+But one bright morning, Benny knew,
+He wanted to try something new.
+Illustration idea: A cheerful bunny holding a carrot, surrounded by a big sunny field.
+
+Page 2
+Text:
+Squeaky Mouse said, “Come and see!
+Cheese is soft and yummy to me.”
+Benny nibbled, took a bite,
+“Mmm,” he smiled, “this tastes just right!”
+Illustration idea: A tiny mouse offering a wedge of cheese to Benny on a picnic blanket.
+
+Page 3
+Text:
+Polly Parrot flapped her wing,
+“Berries are my favorite thing!”
+Benny tried one, juicy-sweet,
+“Oh,” he laughed, “what a tasty treat!”
+Illustration idea: A bright parrot perched on a tree, dropping red berries into Benny’s paws.
+
+Page 4
+Text:
+Timmy Turtle crunched with glee,
+“Lettuce leaves are good for me!”
+Benny munched a leafy snack,
+“Crunch, crunch, crunch—I’ll come back!”
+Illustration idea: A turtle holding a green leaf, smiling as Benny chews beside him.
+
+Page 5
+Text:
+Cheese and berries, lettuce too,
+So many foods for Benny to chew!
+Carrots are yummy, but now he knows,
+Trying new foods helps Benny grow!
+Illustration idea: All the animals together, sharing food at a sunny picnic. Benny stands proudly with his carrot in one paw and a berry in the other.
+</code></pre>
+<p>I really wanted an illustration to go with this story so I asked, again, if ChatGPT can generate a book cover that goes with the children’s book, in watercolor style. Unfortunately, ChatGPT ran into an error.</p>
+</section>
+<section id="reflection-1" class="level1">
+<h1>Reflection</h1>
+<p>This tells me that ChatGPT might have trouble being creative and analyzing a storyline plot to create a graphic. This suggests that ChatGPT is better suited for ideation and planning—helping brainstorm stories, draft rhymes, and describe imagery—while the execution of visuals may require either a specialized illustration tool or human input to ensure quality and consistency. It highlights an important distinction: ChatGPT is powerful at narrative creativity, but its ability to carry that creativity into the visual realm is still limited.</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TExNcyUyQ0xlYXJuaW5nJTJDQ3JlYXRpdml0eQ==" data-listing-date-sort="1758585600000" data-listing-file-modified-sort="1758656962609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="653">
-<div class="thumbnail"><a href="./posts/008_children_book/children_book.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/008_children_book/children_book.html" class="no-external">Children Book with ChatGPT</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q3JlYXRpdml0eQ=='); return false;">Creativity</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/008_children_book/children_book.html" class="no-external">
-<p>Seeing if ChatGPT can generate a children book</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/008_children_book/children_book.html" class="no-external">
-<div class="listing-date">
-Sep 23, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1757980800000" data-listing-file-modified-sort="1758656962609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="954">
-<div class="thumbnail"><a href="./posts/007_myself/myself.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/007_myself/myself.html" class="no-external">Me or ChatGPT?</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/007_myself/myself.html" class="no-external">
-<p>Does ChatGPT know me better than I know myself?</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/007_myself/myself.html" class="no-external">
-<div class="listing-date">
-Sep 16, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1757980800000" data-listing-file-modified-sort="1758656962580" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="217">
-<div class="thumbnail"><a href="./posts/006_ghibli/ghibli.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/006_ghibli/Emily_Headshot.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/006_ghibli/ghibli.html" class="no-external">Artwork with ChatGPT</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/006_ghibli/ghibli.html" class="no-external">
-<p>Turning my headshot into a Studio Ghibli artwork</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/006_ghibli/ghibli.html" class="no-external">
-<div class="listing-date">
-Sep 16, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1757894400000" data-listing-file-modified-sort="1758656962569" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="798">
-<div class="thumbnail"><a href="./posts/005_connections/connections.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/005_connections/connections.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/005_connections/connections.html" class="no-external">Can ChatGPT solve NYT’s Connections Game?</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/005_connections/connections.html" class="no-external">
-<p>I will use ChatGPT to solve the New York Times Connections Game</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/005_connections/connections.html" class="no-external">
-<div class="listing-date">
-Sep 15, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1757376000000" data-listing-file-modified-sort="1758656962567" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="355">
-<div class="thumbnail"><a href="./posts/004_creativity/Creativity.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/004_creativity/AI_Creativity.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/004_creativity/Creativity.html" class="no-external">The Limits of AI Creativity</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/004_creativity/Creativity.html" class="no-external">
-<p>Differences in humans’ creativity and artificial creativity</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/004_creativity/Creativity.html" class="no-external">
-<div class="listing-date">
-Sep 9, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1757289600000" data-listing-file-modified-sort="1758656962551" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="428">
-<div class="thumbnail"><a href="./posts/003_AI/blog2.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/003_AI/ChatGPT_response_post2.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/003_AI/blog2.html" class="no-external">AI as a Mirror</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/003_AI/blog2.html" class="no-external">
-<p>What does the way AI speak, behave, and write reveal about us, humans</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/003_AI/blog2.html" class="no-external">
-<div class="listing-date">
-Sep 8, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="TExNcyUyQ0xlYXJuaW5n" data-listing-date-sort="1756857600000" data-listing-file-modified-sort="1758656962538" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="188">
-<div class="thumbnail"><a href="./posts/002_riddle/medical knowledge.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/002_riddle/chatgpt_1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/002_riddle/medical knowledge.html" class="no-external">Give me a riddle from ChatGPT</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhcm5pbmc='); return false;">Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/002_riddle/medical knowledge.html" class="no-external">
-<p>Can you guess the answer?</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/002_riddle/medical knowledge.html" class="no-external">
-<div class="listing-date">
-Sep 3, 2025
-</div>
-<div class="listing-author">
-Emily
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="TExNcyUyQ3Byb21wdGluZyUyQ2xvZ2lj" data-listing-date-sort="1706832000000" data-listing-file-modified-sort="1758656962536" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="450">
-<div class="thumbnail"><a href="./posts/000_test_post/index.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/000_test_post/gpt3-5.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/000_test_post/index.html" class="no-external">A test post</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">LLMs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvbXB0aW5n'); return false;">prompting</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bG9naWM='); return false;">logic</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/000_test_post/index.html" class="no-external">
-<p>An example post from a Jupyter notebook</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/000_test_post/index.html" class="no-external">
-<div class="listing-date">
-Feb 2, 2024
-</div>
-<div class="listing-author">
-An LLM User
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
