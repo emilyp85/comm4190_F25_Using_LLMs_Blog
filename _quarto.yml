@@ -6,8 +6,6 @@ website:
   navbar:
     right:
       - about.qmd
-      - icon:
-      - text: 
 format:
   html:
     theme: morph
