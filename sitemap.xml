@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/index.html</loc>
-    <lastmod>2025-09-24T17:59:51.448Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/003_AI/blog2.html</loc>
-    <lastmod>2025-09-24T17:59:51.464Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/006_ghibli/ghibli.html</loc>
-    <lastmod>2025-09-24T17:59:51.494Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/000_test_post/index.html</loc>
-    <lastmod>2025-09-24T17:59:51.449Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/007_myself/myself.html</loc>
-    <lastmod>2025-09-24T17:59:51.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/002_riddle/medical knowledge.html</loc>
-    <lastmod>2025-09-24T17:59:51.451Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/008_children_book/children_book.html</loc>
-    <lastmod>2025-09-24T17:59:51.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/005_connections/connections.html</loc>
-    <lastmod>2025-09-24T17:59:51.483Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/004_creativity/Creativity.html</loc>
-    <lastmod>2025-09-24T17:59:51.480Z</lastmod>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/about.html</loc>
+    <lastmod>2025-10-07T20:59:24.437Z</lastmod>
   </url>
   <url>
     <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/009_outfits/outfits.html</loc>
-    <lastmod>2025-09-24T17:59:51.525Z</lastmod>
+    <lastmod>2025-10-07T20:59:24.513Z</lastmod>
   </url>
   <url>
-    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/about.html</loc>
-    <lastmod>2025-09-24T17:59:51.448Z</lastmod>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/008_children_book/children_book.html</loc>
+    <lastmod>2025-10-07T20:59:24.511Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/003_AI/blog2.html</loc>
+    <lastmod>2025-10-07T20:59:24.453Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/005_connections/connections.html</loc>
+    <lastmod>2025-10-07T20:59:24.472Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/002_riddle/medical knowledge.html</loc>
+    <lastmod>2025-10-07T20:59:24.440Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/index.html</loc>
+    <lastmod>2025-10-07T20:59:24.437Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/000_test_post/index.html</loc>
+    <lastmod>2025-10-07T20:59:24.438Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/010_ghosts/ghosts.html</loc>
+    <lastmod>2025-10-07T20:59:24.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/011_debate/debate.html</loc>
+    <lastmod>2025-10-07T20:59:24.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/007_myself/myself.html</loc>
+    <lastmod>2025-10-07T20:59:24.511Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/006_ghibli/ghibli.html</loc>
+    <lastmod>2025-10-07T20:59:24.482Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emilyp85.github.io/comm4190_F25_Using_LLMs_Blog/posts/004_creativity/Creativity.html</loc>
+    <lastmod>2025-10-07T20:59:24.469Z</lastmod>
   </url>
 </urlset>
