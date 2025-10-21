@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Emily">
+<meta name="dcterms.date" content="2025-10-21">
+<meta name="description" content="Using ChatGPT to understand what sales are going on">
+
+<title>Shopping – Playing with LLM prompts</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a8515150ab97b067293ad520a6a68df1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Playing with LLM prompts</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Emily Park</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Shopping</h1>
+                  <div>
+        <div class="description">
+          Using ChatGPT to understand what sales are going on
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">LLMs</div>
+                <div class="quarto-category">Learning</div>
+                <div class="quarto-category">Creativity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Emily </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 21, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>I’ve realized that my wardrobe is seriously lacking when it comes to winter clothes. As the weather gets colder, I’ve noticed that I don’t really have enough warm or versatile pieces to get me through the season comfortably. Because of that, I’ve decided to go shopping to update my wardrobe with items that are both practical for winter and reflective of my personal style.</p>
+<p>The prompt is: What are some sales that are currently going on, that are trending right now?</p>
+</section>
+<section id="response-1" class="level1">
+<h1>Response 1</h1>
+<p>This is ChatGPT’s first response:</p>
+<p>I couldn’t reliably pull up <em>all</em> current real-time flash sales (since many vary by region, email alerts, and retailer), but I can suggest a few places to check — and what types of sales are common in October. If you like, I can filter by your preferred brands or price range.</p>
+<hr>
+<section id="where-to-find-trending-good-winter-season-sales-right-now" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-find-trending-good-winter-season-sales-right-now">🎯 Where to Find Trending / Good Winter-Season Sales Right Now</h2>
+<p>Here are types of sales you’ll often find in late October:</p>
+<ul>
+<li><strong>End-of-season clearance</strong> on summer/fall items to make way for winter inventory. Retailers often push discounts on sweaters, light jackets, or boots.</li>
+<li><strong>Holiday or “Pre-Holiday” promotions</strong> begin to surface as stores prepare for Black Friday / Cyber Week.</li>
+<li><strong>“Warm-weather-to-cold-weather” transition sales</strong> — like discounts on lighter outerwear, layering pieces, scarves, etc.</li>
+<li><strong>Promo codes / extra discounts</strong> via email sign-ups, rewards programs, or for online newsletter subscribers.</li>
+</ul>
+<hr>
+</section>
+<section id="places-to-check" class="level2">
+<h2 class="anchored" data-anchor-id="places-to-check">🔍 Places to Check</h2>
+<p>Here are some stores that <em>often</em> have good seasonal sales around this time:</p>
+<ul>
+<li>Amazon — Fall fashion deals, daily / weekly “Outlet” or “Warehouse-Deals” sections</li>
+<li>Macy’s — regular October / early-November promotions</li>
+<li>Nordstrom — end-of-season clearance events</li>
+<li>Outdoor / sportswear brands (e.g.&nbsp;Columbia, Patagonia, North Face) — seasonal markdowns on jackets, fleeces, etc.</li>
+<li>Fast fashion or mall-based retailers (e.g.&nbsp;H&amp;M, Zara, Uniqlo) may roll over summer stock or run 20–50% off on certain lines.</li>
+</ul>
+<hr>
+</section>
+<section id="what-i-can-do-next" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-can-do-next">✅ What I Can Do Next</h2>
+<p>If you tell me which <strong>brands</strong> you like (or your <strong>budget</strong>), I can pull up <em>live</em> current sales (with links) that match your needs. Would you prefer me to gather those?</p>
+</section>
+</section>
+<section id="prompt-2" class="level1">
+<h1>Prompt 2</h1>
+<p>Please be more specific and cater your response to a female college student.</p>
+</section>
+<section id="response-2" class="level1">
+<h1>Response 2</h1>
+<p>This is ChatGPT’s second response:</p>
+<p>If you’re a female college student looking to update your winter wardrobe on a budget, here are <em>specific sales</em> and <em>where to look</em> right now + ideas that tend to work well for students.</p>
+<hr>
+<section id="sales-discounts-to-check-out" class="level2">
+<h2 class="anchored" data-anchor-id="sales-discounts-to-check-out">🔍 Sales &amp; Discounts to Check Out</h2>
+<p>Here are some promotions and brands that often have good student-friendly or seasonal discounts:</p>
+<ul>
+<li><strong>ASOS</strong> – They often have student discounts via UNiDAYS or other student verification systems.</li>
+<li><strong>Forever 21 / H&amp;M / Zara</strong> – Fast fashion brands tend to run seasonal promotions around October, especially on outerwear, sweaters, leggings, etc.</li>
+<li><strong>Uniqlo</strong> – Check their “Special Offers” section; they sometimes have discounts on HeatTech, extra-lines like ultra-warm parkas or down coats.</li>
+<li><strong>J.Crew Factory</strong> – Often has good discounts (especially on coats, cardigans, and sweaters) plus occasional extra percentage off with codes.</li>
+<li><strong>Lululemon / Athleta</strong> – Some student-discounts are available (verify via their student programs), especially on cold-weather activewear or outer layer pieces.</li>
+<li><strong>Outdoor / performance brands</strong> (e.g.&nbsp;Columbia, The North Face, Patagonia) — you might catch end-of-season markdowns on jackets, puffer vests, fleece tops.</li>
+</ul>
+<p>Also check <em>your college bookstore / onsite campus stores</em>, which sometimes partner with brands and run promos or student bundle discounts on outerwear or cold-weather gear.</p>
+<hr>
+</section>
+<section id="what-types-of-items-are-likely-discounted" class="level2">
+<h2 class="anchored" data-anchor-id="what-types-of-items-are-likely-discounted">👚 What Types of Items Are Likely Discounted</h2>
+<p>These are good “winter-wardrobe” categories to watch for when they’re on sale:</p>
+<ul>
+<li>Heavy coats, puffer jackets, wool blends</li>
+<li>Sweaters / cardigans (chunky knits or layering pieces)</li>
+<li>Boots (especially ankle boots or snow-resistant styles)</li>
+<li>Thermal / base layers (long-sleeve tops, leggings)</li>
+<li>Hoodies, fleece jackets, scarves / gloves / beanies</li>
+</ul>
+<p>These are often discounted by <strong>20–50%</strong> at this time of year as stores prep for Black Friday / late-season stock rotation.</p>
+<hr>
+</section>
+<section id="tips-to-maximize-student-spending-power" class="level2">
+<h2 class="anchored" data-anchor-id="tips-to-maximize-student-spending-power">💡 Tips to Maximize Student Spending Power</h2>
+<ul>
+<li>Sign up for <strong>student verification services</strong> (UNiDAYS, Student Beans, etc.) to unlock student-only discounts.</li>
+<li>Join brand email lists / loyalty programs — sometimes you get an additional 10-20% off or “extra-markdowns.”</li>
+<li>Shop outlet versions of brands (e.g.&nbsp;J.Crew <em>Factory</em>, Gap <em>Factory</em>, Nike Outlet online) for deeper bargains.</li>
+<li>Compare online vs in-store — sometimes local campus-area stores run promos tied to campus events or student weeks.</li>
+<li>Use cash-back / coupon-extension browser add-ons to check for extra savings at checkout.</li>
+</ul>
+<hr>
+<p>If you tell me your <strong>budget range</strong> (e.g.&nbsp;≤ $100 per coat, ≤ $50 per sweater) <em>or your favorite brands</em>, I can pull together <strong>live current sales</strong> (items you could buy <em>right now</em>) that match <em>your style</em>.</p>
+</section>
+</section>
+<section id="prompt-3" class="level1">
+<h1>Prompt 3</h1>
+<p>My budget is $80. Can you put together some clothes I can buy? I am looking for something cute yet warm enough that I can wear this upcoming winter.</p>
+</section>
+<section id="response-3" class="level1">
+<h1>Response 3</h1>
+<p>Great — I’ll assume your <strong>$80 budget</strong> means <em>up to $80 per item</em> (if you meant $80 total, tell me and I’ll re-do everything to fit that). Below are <strong>three student-friendly winter-ready outfit builds</strong> (each centered on one main outer layer under $80), plus layering pieces and leggings you can pair with them. I included where to shop and approximate prices so you can click/browse quickly.</p>
+<hr>
+</section>
+<section id="classic-warm-puffer-cheap-very-weatherproof" class="level1">
+<h1>1) Classic, warm puffer — cheap + very weatherproof</h1>
+<ul>
+<li><strong>Main:</strong> Target long puffer / parkas — many options between <strong>$50–$80</strong> right now (good coverage, hooded, easy to toss over everything). (<a href="https://www.target.com/c/coats-jackets-women-s-clothing/puffer-jackets/-/N-5xtchZut6qm?utm_source=chatgpt.com" title="Puffer Jackets : Coats &amp; Jackets for Women">Target</a>)</li>
+<li><strong>Layering:</strong> Uniqlo HEATTECH long-sleeve tee (crew/turtleneck) — <strong>$9.90–$34.90</strong> depending on warmth level; great under sweaters. (<a href="https://www.uniqlo.com/us/en/women/innerwear/heattech/long-sleeve?srsltid=AfmBOoqpQQWdtW45rO9qxxFORUetT3GfLlb0RWz-XZh9enPSTOmFkD6U&amp;utm_source=chatgpt.com" title="Women's HEATTECH (Long-Sleeve)">UNIQLO</a>)</li>
+<li><strong>Bottoms:</strong> Fleece-lined thermal leggings from Amazon — usually <strong>$15–$30</strong> and comfy for walking across campus. (<a href="https://www.amazon.com/womens-thermal-leggings/s?k=womens+thermal+leggings&amp;utm_source=chatgpt.com" title="Womens Thermal Leggings">Amazon</a>)</li>
+<li><strong>Why this works for a student:</strong> Puffy coats are low-maintenance, warm, and go with hoodies, jeans, or sweatpants — perfect for long walks across campus and late-night study runs.</li>
+<li><strong>Style tip:</strong> Pick a neutral (black/olive/beige) to maximize outfits; add a colorful beanie or scarf for personality.</li>
+</ul>
+<hr>
+</section>
+<section id="cozy-trendy-sherpa-cute-casual-for-classes" class="level1">
+<h1>2) Cozy, trendy sherpa — cute &amp; casual for classes</h1>
+<ul>
+<li><strong>Main:</strong> Old Navy sherpa jacket — often on sale (examples around <strong>$40–$60</strong> in current Old Navy sales). Sherpa jackets are soft, trendy, and layer-friendly. (<a href="https://oldnavy.gap.com/shop/sherpa?utm_source=chatgpt.com" title="Sherpa Products - Old Navy - Gap">Old Navy</a>)</li>
+<li><strong>Layering:</strong> Lightweight Uniqlo HEATTECH tee or a ribbed knit sweater (Uniqlo and H&amp;M have affordable knits in the $10–$40 range). (<a href="https://www.uniqlo.com/us/en/women/innerwear/heattech/long-sleeve?srsltid=AfmBOoqpQQWdtW45rO9qxxFORUetT3GfLlb0RWz-XZh9enPSTOmFkD6U&amp;utm_source=chatgpt.com" title="Women's HEATTECH (Long-Sleeve)">UNIQLO</a>)</li>
+<li><strong>Bottoms:</strong> High-waist jeans or leggings (Target/Old Navy carry student-budget-friendly fits).</li>
+<li><strong>Why this works for a student:</strong> Sherpa is cozy for indoor/outdoor transitions (dorm → class) and looks “cute” in photos — ideal for casual campus aesthetic.</li>
+<li><strong>Style tip:</strong> Pair with chunky sneakers or ankle boots and a crossbody bag for errands.</li>
+</ul>
+<hr>
+</section>
+<section id="elevated-but-affordable-hm-woollong-coats-on-sale" class="level1">
+<h1>3) Elevated but affordable — H&amp;M wool/long coats on sale</h1>
+<ul>
+<li><strong>Main:</strong> H&amp;M seasonal coats and sale items — you can often find <strong>wool-blend</strong> or longline puffers at H&amp;M sale prices that stay ≤$80 if you browse the sale section. (<a href="https://www2.hm.com/en_us/women/sale/jackets-coats.html?utm_source=chatgpt.com" title="SALE | Women's Jackets &amp; Coats | Shop Online">H&amp;M</a>)</li>
+<li><strong>Layering:</strong> Turtleneck sweater (H&amp;M or Uniqlo), or a cropped knit + scarf.</li>
+<li><strong>Bottoms:</strong> Tights + skirt + thermal leggings, or straight-leg jeans — because a long coat elevates any outfit.</li>
+<li><strong>Why this works for a student:</strong> Looks more polished for presentations or interviews but still affordable if you shop H&amp;M sales.</li>
+<li><strong>Style tip:</strong> Choose a camel or charcoal coat — it instantly upgrades simple outfits.</li>
+</ul>
+<hr>
+<section id="how-to-stretch-80-further-student-hacks" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-stretch-80-further-student-hacks">How to stretch $80 further (student hacks)</h2>
+<ul>
+<li><strong>Student discounts:</strong> ASOS, many brands via UNiDAYS/Student Beans (ASOS typically has ~10% for students). Use those where possible. (<a href="https://www.myunidays.com/US/en-US/partners/asos/view?utm_source=chatgpt.com" title="ASOS 10% Student Discount">UNiDAYS</a>)</li>
+<li><strong>Sign up for brand emails</strong> for first-time coupons (often 10–20% off).</li>
+<li><strong>Check “sale” / “outlet” sections</strong> (H&amp;M sale, Target clearance, Old Navy sale pages linked above). (<a href="https://www2.hm.com/en_us/women/sale/jackets-coats.html?utm_source=chatgpt.com" title="SALE | Women's Jackets &amp; Coats | Shop Online">H&amp;M</a>)</li>
+<li><strong>Buy one warm outer layer + cheap thermals</strong> (HeatTech + fleece leggings) — that combo keeps you warm without breaking the bank.</li>
+</ul>
+<hr>
+</section>
+<section id="quick-shopping-plan-what-to-buy-first" class="level2">
+<h2 class="anchored" data-anchor-id="quick-shopping-plan-what-to-buy-first">Quick shopping plan (what to buy first)</h2>
+<ol type="1">
+<li><strong>Pick your outer layer</strong> (puffer, sherpa, or H&amp;M coat) — budget up to $80.</li>
+<li><strong>Buy one HEATTECH or thermal top</strong> from Uniqlo ($10–$35) to use under everything. (<a href="https://www.uniqlo.com/us/en/women/innerwear/heattech/long-sleeve?srsltid=AfmBOoqpQQWdtW45rO9qxxFORUetT3GfLlb0RWz-XZh9enPSTOmFkD6U&amp;utm_source=chatgpt.com" title="Women's HEATTECH (Long-Sleeve)">UNIQLO</a>)</li>
+<li><strong>Buy fleece-lined leggings</strong> ($15–$30) for daily warmth. (<a href="https://www.amazon.com/thermal-leggings/s?k=thermal+leggings&amp;utm_source=chatgpt.com" title="Thermal Leggings">Amazon</a>)</li>
+</ol>
+<hr>
+<p>If you want, I can now:</p>
+<ul>
+<li>Pull <strong>specific current items</strong> (direct product links) from Target, Old Navy, Uniqlo, Amazon, and H&amp;M that match your size/style and are ≤$80, or</li>
+<li>Make a <strong>3-outfit shopping cart</strong> (one puffer + 1 HeatTech + leggings; or sherpa + HeatTech + leggings; etc.).</li>
+</ul>
+<p>Which would you prefer? (Or if you meant <strong>$80 total</strong>, tell me and I’ll rework everything to fit that.)</p>
+</section>
+</section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<p>Overall, my analysis of this conversation with ChatGPT is that it was remarkably thorough and efficient in its research. It was able to compile a complete outfit — or even multiple outfit combinations — for me using the information it gathered about current sales across a variety of popular brands such as Target, Amazon, Uniqlo, and H&amp;M. I was genuinely impressed by how quickly and cohesively ChatGPT synthesized data from different retailers to create options that were both practical and stylish for a college student like me. Its ability to understand my preferences, stay within my budget, and suggest specific stores demonstrated how versatile and adaptive the tool can be when it comes to real-world tasks like shopping.</p>
+<p>That said, in all honesty, I didn’t actually verify the accuracy of the information ChatGPT provided. Because of that, I can’t be entirely sure whether the sales and prices it mentioned were up to date or completely correct. This uncertainty highlights one of the main limitations of relying on AI-generated research — while ChatGPT can be an incredibly useful starting point, it’s still important for users to cross-check the information independently to ensure reliability and accuracy.</p>
+<p><img src="shopping.png" class="img-fluid"></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/emilyp85\.github\.io\/comm4190_F25_Using_LLMs_Blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
