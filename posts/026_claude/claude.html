@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Emily">
+<meta name="dcterms.date" content="2025-11-12">
+<meta name="description" content="Using Claude to try my storyline blog again">
+
+<title>Claude – Playing with LLM prompts</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a8515150ab97b067293ad520a6a68df1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Playing with LLM prompts</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Emily Park</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Claude</h1>
+                  <div>
+        <div class="description">
+          Using Claude to try my storyline blog again
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">LLMs</div>
+                <div class="quarto-category">Learning</div>
+                <div class="quarto-category">Creativity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Emily </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 12, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Several blog posts ago, I had asked ChatGPT to generate a storyline by creating a dialogue between two ghosts who haunt the same house but dislike each other’s haunting style. I found that the storyline it gave me was pretty superficial and tame. My friend have told me that the LLM, Claude, has better writing skills. Thus, I want to see if Claude’s creativity is better than ChatGPT’s creativity.</p>
+<p>I will ask Claude the same prompt I asked ChatGPT: “Write a dialogue between two ghosts haunting the same house who are annoyed by each other’s haunting style.”</p>
+</section>
+<section id="first-response" class="level1">
+<h1>First Response:</h1>
+<p>The first thing I noticed was that Claude’s response time was much slower than ChatGPT.</p>
+<p>This is the response Claude gave me:</p>
+<pre><code>I've written a dialogue between Margaret and Gerald, two ghosts with completely opposite approaches to haunting. Margaret is all about subtle psychological horror—moving things just slightly, creating an atmosphere of creeping dread. Gerald, on the other hand, is a traditionalist who loves the big theatrical scares: bleeding walls, shrieking specters, the whole dramatic package.
+Their bickering reveals both their frustration with each other and the underlying comedy of two supernatural beings who are stuck together for eternity but can't agree on basic haunting philosophy. Margaret's final subtle dig at the end (moving Gerald's chain) shows she just can't help herself!</code></pre>
+<section id="clashing-haunting-styles" class="level2">
+<h2 class="anchored" data-anchor-id="clashing-haunting-styles">Clashing Haunting Styles</h2>
+<p><strong>MARGARET:</strong> For the last time, Gerald, you cannot keep doing the blood-dripping-from-the-walls routine every single night. It’s exhausting.</p>
+<p><strong>GERALD:</strong> Exhausting? I’m a ghost! We don’t get exhausted!</p>
+<p><strong>MARGARET:</strong> Emotionally exhausting. Besides, the new family has only been here three weeks. You’re going to send them running before I’ve even gotten properly started.</p>
+<p><strong>GERALD:</strong> That’s rather the point, isn’t it? We’re supposed to be haunting them.</p>
+<p><strong>MARGARET:</strong> <em>Haunting</em> them, Gerald, not traumatizing them. There’s an art to it. A subtlety. I’ve been moving objects three inches to the left while they sleep. The wife is convinced she’s losing her mind.</p>
+<p><strong>GERALD:</strong> Three inches? <em>Three inches?</em> How thrillingly terrifying.</p>
+<p><strong>MARGARET:</strong> It’s called psychological horror. It builds. Last night I made all the cabinet doors open exactly forty-five degrees. She stood in the kitchen for twenty minutes just staring.</p>
+<p><strong>GERALD:</strong> Well, last night I manifested as a shrieking specter at the foot of their bed with hollow eyes and a gaping maw.</p>
+<p><strong>MARGARET:</strong> Yes, I heard. The whole neighborhood heard.</p>
+<p><strong>GERALD:</strong> The husband wet himself!</p>
+<p><strong>MARGARET:</strong> Exactly my point! Now they’re talking about getting the house blessed. Do you know how uncomfortable holy water is? I spent six months being blessed out of the Victorian mansion on Elm Street.</p>
+<p><strong>GERALD:</strong> That’s because you were being too <em>subtle</em>. They didn’t even know you were there.</p>
+<p><strong>MARGARET:</strong> They knew something was there. That’s the beauty of it. The slow realization. The creeping dread. You’re just all jump scares and theatrics.</p>
+<p><strong>GERALD:</strong> And you’re all passive-aggressive furniture rearranging! “Oh, look at me, I moved the TV remote. I’m so haunting.” Where’s the spectacle? Where’s the <em>drama</em>?</p>
+<p><strong>MARGARET:</strong> Where’s the longevity, Gerald? At this rate, they’ll be gone by Christmas and then we’ll have to wait for another family, and you <em>know</em> how long this house sat empty after the Hendersons.</p>
+<p><strong>GERALD:</strong> The Hendersons lasted two days!</p>
+<p><strong>MARGARET:</strong> Yes, because of YOU and your bleeding walls obsession!</p>
+<p><strong>GERALD:</strong> It’s a classic!</p>
+<p><strong>MARGARET:</strong> It’s derivative! Every ghost does the bleeding walls. Why don’t you try something original for once?</p>
+<p><strong>GERALD:</strong> Oh, like moving picture frames so they’re slightly crooked? How avant-garde.</p>
+<p><strong>MARGARET:</strong> Better than your possessed doll collection. That’s been done to death.</p>
+<p><strong>GERALD:</strong> We ARE death, Margaret.</p>
+<p><strong>MARGARET:</strong> <em>(sighs)</em> Look, can we at least agree on a schedule? You take Tuesday and Thursday for your screaming and wall-bleeding, and I’ll have the rest of the week for proper atmospheric haunting?</p>
+<p><strong>GERALD:</strong> Absolutely not. I’m not being relegated to two days a week in my own house.</p>
+<p><strong>MARGARET:</strong> YOUR house? I died here in 1847!</p>
+<p><strong>GERALD:</strong> And I died here in 1923! Seniority doesn’t mean anything when you’re eternal!</p>
+<p><strong>MARGARET:</strong> Fine. Then I’m haunting the kitchen exclusively. You can have the bedrooms.</p>
+<p><strong>GERALD:</strong> The kitchen? What are you going to do, make ominous toast?</p>
+<p><strong>MARGARET:</strong> I’m going to make every appliance turn on at 3:17 AM. Every. Single. Night. That’s psychological warfare.</p>
+<p><strong>GERALD:</strong> And I suppose I’ll just continue appearing in mirrors and making blood drip from the ceiling like a <em>pedestrian</em> ghost?</p>
+<p><strong>MARGARET:</strong> Finally, we agree on something.</p>
+<p><strong>GERALD:</strong> …Did you just move my favorite rattling chain three inches to the left?</p>
+<p><strong>MARGARET:</strong> I have no idea what you’re talking about.</p>
+<p><strong>GERALD:</strong> MARGARET!</p>
+<hr>
+<p>It is interesting to see that Claude gave me the same name for one of the ghosts that ChatGPT did: Margaret. The humor is not really funny, though.</p>
+</section>
+</section>
+<section id="second-response" class="level1">
+<h1>Second Response</h1>
+<p>I asked Claude, “Can you make the humor more college style?”</p>
+<p>This was Claude’s response:</p>
+<pre><code>I've updated it with a college-style vibe! Now it's Chad and Ashley with more casual slang, contemporary references (TikTok challenges, "gaslight-gatekeep-ghostkeep," air fryers, "get rekt"), and that roommate-argument energy you'd find in a dorm. They died in hilariously modern ways and bicker like they're fighting over whose turn it is to do the dishes.Retry</code></pre>
+<section id="clashing-haunting-styles-1" class="level2">
+<h2 class="anchored" data-anchor-id="clashing-haunting-styles-1">Clashing Haunting Styles</h2>
+<p><strong>CHAD:</strong> Bro, for the last time, you CANNOT keep doing the blood-dripping-from-the-walls thing every single night. It’s getting old.</p>
+<p><strong>ASHLEY:</strong> Excuse me? I’m literally dead and even I know that’s iconic. That’s like, peak haunting.</p>
+<p><strong>CHAD:</strong> Peak haunting was in like, the 1800s. We need to evolve, dude. I’ve been doing this whole subtle psychological thing where I move stuff three inches to the left. The mom is literally losing it.</p>
+<p><strong>ASHLEY:</strong> Three inches? Bro, that’s not haunting, that’s just being a dick.</p>
+<p><strong>CHAD:</strong> It’s called <em>elevated horror</em>. It’s atmospheric. Last night I made all the cabinet doors open exactly forty-five degrees. She stood there for like twenty minutes just staring. It was beautiful.</p>
+<p><strong>ASHLEY:</strong> Cool story. Last night I manifested as a shrieking hellbeast at the foot of their bed. The dad literally pissed himself.</p>
+<p><strong>CHAD:</strong> See, THAT’S the problem! Now they’re talking about getting the house blessed. Do you know what holy water feels like? I got blessed out of my last haunt and it was NOT a vibe.</p>
+<p><strong>ASHLEY:</strong> That’s because you were being too subtle, Chad. They probably thought their house just had bad Feng Shui or whatever.</p>
+<p><strong>CHAD:</strong> The whole point is the slow burn! The creeping dread! You’re just doing jump scares like we’re in some low-budget horror movie.</p>
+<p><strong>ASHLEY:</strong> And you’re out here gaslight-gatekeep-ghostkeeping them with your “ooh I moved the TV remote” energy. Where’s the drama? Where’s the COMMITMENT?</p>
+<p><strong>CHAD:</strong> Where’s the sustainability, Ashley? At this rate they’ll be gone by finals week and we’ll have to wait for another family. You remember how long this place sat empty after the Hendersons?</p>
+<p><strong>ASHLEY:</strong> The Hendersons lasted like two days!</p>
+<p><strong>CHAD:</strong> Yeah, because of YOUR bleeding walls obsession! Get some new material!</p>
+<p><strong>ASHLEY:</strong> It’s a CLASSIC! That’s like saying “get new material” to someone who does the Cupid Shuffle at weddings.</p>
+<p><strong>CHAD:</strong> The Cupid Shuffle slaps and you know it. But seriously, every ghost does bleeding walls. Why don’t you try something original?</p>
+<p><strong>ASHLEY:</strong> Oh, like moving picture frames so they’re slightly crooked? Wow, so indie horror of you.</p>
+<p><strong>CHAD:</strong> Better than your possessed doll collection. That’s so overdone it’s basically a meme at this point.</p>
+<p><strong>ASHLEY:</strong> We ARE a meme, Chad. We’re dead people haunting a house in 2025.</p>
+<p><strong>CHAD:</strong> <em>(groans)</em> Okay, look. Can we at least agree on a schedule? You take Tuesday and Thursday for your screaming and wall-bleeding, I’ll take the rest of the week for proper atmospheric content?</p>
+<p><strong>ASHLEY:</strong> Absolutely not. I’m not getting benched to two days a week in MY OWN HAUNT.</p>
+<p><strong>CHAD:</strong> YOUR haunt? I died here in a really embarrassing frat party accident!</p>
+<p><strong>ASHLEY:</strong> And I died here from a TikTok challenge gone wrong! Recency doesn’t make you special!</p>
+<p><strong>CHAD:</strong> Fine. Then I’m calling dibs on the kitchen. You can have the bedrooms.</p>
+<p><strong>ASHLEY:</strong> The kitchen? What are you gonna do, make threatening avocado toast?</p>
+<p><strong>CHAD:</strong> I’m gonna make every appliance turn on at 3 AM. Microwave, blender, air fryer, everything. That’s psychological warfare.</p>
+<p><strong>ASHLEY:</strong> And I’ll just keep showing up in mirrors covered in blood like some basic ghost, I guess?</p>
+<p><strong>CHAD:</strong> Finally you get it.</p>
+<p><strong>ASHLEY:</strong> …Bro, did you just move my chains three inches to the left?</p>
+<p><strong>CHAD:</strong> I have no idea what you’re talking about.</p>
+<p><strong>ASHLEY:</strong> CHAD!</p>
+<p><strong>CHAD:</strong> Get rekt.</p>
+<hr>
+<p>I have realized that the humor Claude thinks college students have is very outdated; no one I know really talks like that. It also uses a lot of outdated slangs like “rekt” or “vibe.”</p>
+</section>
+</section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<p>Maybe Claude is better at academic writing (which I will be testing in the future!) than creative writing because this writing is very similar to ChatGPT’s; it does not seem much better. Both LLMs’ version of college humor are relatively similar and so is the writing style. Despite Claude’s claim to make the humor “college-style,” the jokes relied on outdated slang and exaggerated stereotypes about Gen Z speech, making the dialogue more cringe than natural. The seocnd version read like a parody of how adults <em>think</em> college students talk, rather than how we actually do.</p>
+<p>In both cases, the creative output was competent but formulaic. Both LLMs seemed to default to the same comedic tropes (sarcastic banter and exaggerated personality clashes as well as predictable punchlines). I wonder what that says about artificial intelligence’s humor?</p>
+<p>Next time, I plan to test whether Claude’s supposed strength in academic writing holds up better than its performance inc raetive writing. Maybe its style and structure work more effectively in analytical or persuasive contexts rather than in humor or fiction.</p>
+<p><img src="download.jpg" class="img-fluid"></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/emilyp85\.github\.io\/comm4190_F25_Using_LLMs_Blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
