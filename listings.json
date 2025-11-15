@@ -2,7 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/031_booksix/booksix.html",
       "/posts/029_tsitp/tsitp.html",
+      "/posts/030_career/career.html",
       "/posts/027_bookfive/bookfive.html",
       "/posts/028_skill/skill.html",
       "/posts/026_claude/claude.html",

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Emily">
+<meta name="dcterms.date" content="2025-11-15">
+<meta name="description" content="Using Gemini to generate a career path for me">
+
+<title>Generating a Career Path – Playing with LLM prompts</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a8515150ab97b067293ad520a6a68df1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Playing with LLM prompts</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Emily Park</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Generating a Career Path</h1>
+                  <div>
+        <div class="description">
+          Using Gemini to generate a career path for me
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">LLMs</div>
+                <div class="quarto-category">Learning</div>
+                <div class="quarto-category">Professional</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Emily </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 15, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Now that I am approaching graduation, I need to seriously think about what I want to do with my life. I have always wanted to become a speechwriter (although I turned prelaw two years ago), inspired by the character, Toby Ziegler, from the TV series, <em>The West Wing</em>. While I have coffee chatted many people, no one seems to know how to get into that profession. Thus, with no one by my side, I obviously turned to an LLM to help me.</p>
+<p>I decided to ask Gemini this prompt: “I want to become a speechwriter for a politician. How can I go about this?”</p>
+</section>
+<section id="geminis-first-response" class="level1">
+<h1>Gemini’s First Response</h1>
+<p>That’s a fantastic and impactful goal! Becoming a speechwriter for a politician requires a blend of excellent writing skills, political savvy, and experience.</p>
+<p>Here is a breakdown of the steps you can take to pursue a career in political speechwriting:</p>
+<section id="build-a-strong-educational-foundation" class="level3">
+<h3 class="anchored" data-anchor-id="build-a-strong-educational-foundation">1. 🎓 Build a Strong Educational Foundation</h3>
+<p>A solid background is crucial for understanding policy and communication strategy.</p>
+<ul>
+<li><strong>Degree:</strong> A Bachelor’s degree is typically required. Preferred fields include:
+<ul>
+<li><strong>Communications, Journalism, or English:</strong> To hone your fundamental writing and narrative skills.</li>
+<li><strong>Political Science, History, or Public Policy:</strong> To develop a deep understanding of current events, government, and the issues you’ll be writing about.</li>
+</ul></li>
+<li><strong>Coursework:</strong> Take classes in speech, rhetoric, history, civics, and writing (especially persuasive writing).</li>
+<li><strong>Certificates:</strong> Some institutions offer post-secondary or graduate certificates in political communication or speechwriting.</li>
+</ul>
+</section>
+<section id="develop-specialized-writing-skills" class="level3">
+<h3 class="anchored" data-anchor-id="develop-specialized-writing-skills">2. 📝 Develop Specialized Writing Skills</h3>
+<p>Speechwriting is distinct from other forms of writing. You need to write for the ear, not just the eye.</p>
+<ul>
+<li><strong>Practice “Writing Aloud”:</strong> Use simple, direct, and often short sentences. A speech must be easy to understand when heard.</li>
+<li><strong>Master Rhetoric:</strong> Learn and practice rhetorical devices like <strong>anaphora</strong> (repetition), <strong>parallelism</strong>, and <strong>antithesis</strong> (juxtaposing contrasting ideas) to make your speeches memorable and persuasive.</li>
+<li><strong>Write in the Politician’s Voice:</strong> You must be able to adopt the unique cadence, tone, and vocabulary of the person delivering the speech—a skill known as <strong>ghostwriting</strong>. This often involves studying their previous speeches and writings.</li>
+<li><strong>Translate Policy into Story:</strong> The ability to simplify complex policy issues into clear, compelling, and emotionally resonant messages and stories is essential.</li>
+</ul>
+</section>
+<section id="gain-relevant-political-experience" class="level3">
+<h3 class="anchored" data-anchor-id="gain-relevant-political-experience">3. 💼 Gain Relevant Political Experience</h3>
+<p>Speechwriting positions rarely go to candidates without political or government experience.</p>
+<ul>
+<li><strong>Start with Internships:</strong> This is the most common entry point. Look for internships in:
+<ul>
+<li><strong>Political Campaigns (Local or National):</strong> Campaigns are always in need of writing help.</li>
+<li><strong>Elected Officials’ Offices (Local, State, or Federal):</strong> Search for roles like Press Intern, Communications Intern, or Legislative Correspondent.</li>
+<li><strong>Government Agencies or Non-Profits:</strong> Organizations focused on policy and advocacy often have communications teams.</li>
+</ul></li>
+<li><strong>Volunteer:</strong> Offer your writing services to local candidates or advocacy groups. Start small to gain practical experience and build a portfolio.</li>
+<li><strong>Work as a Staffer:</strong> Many political speechwriters begin as general staffers (e.g., Media Advisor, Communications Assistant) and are gradually given speechwriting responsibilities.</li>
+</ul>
+</section>
+<section id="create-a-powerful-portfolio" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-powerful-portfolio">4. 📂 Create a Powerful Portfolio</h3>
+<p>Your work samples are your most important asset.</p>
+<ul>
+<li><strong>Include Variety:</strong> Showcase different types of political writing: a short stump speech, a policy address, an op-ed, a press release, or talking points.</li>
+<li><strong>Demonstrate Voice:</strong> If possible, write a sample speech for a politician you admire (or critique/rewrite one of their real speeches) to demonstrate your ability to write in an adopted voice.</li>
+</ul>
+</section>
+<section id="network-in-political-circles" class="level3">
+<h3 class="anchored" data-anchor-id="network-in-political-circles">5. 🤝 Network in Political Circles</h3>
+<p>Political jobs are often about who you know.</p>
+<ul>
+<li><strong>Connect with Staffers:</strong> Attend political events, volunteer for campaigns, and connect with people who work on the communication or legislative teams for politicians.</li>
+<li><strong>Join Organizations:</strong> Look for professional groups for government communicators or political professionals.</li>
+<li><strong>Maintain Your Reputation:</strong> Politics is a small world. Work hard, be professional, and meet your deadlines, as your reputation will follow you.</li>
+</ul>
+<p>Would you like me to search for current political communications or writing internships in your area?</p>
+</section>
+</section>
+<section id="my-response" class="level1">
+<h1>My Response</h1>
+<p>I believe I have done the first 3 steps by being a student at an Ivy League university, doing multiple political internships, and majoring in communications and political science. What I am confused about is how I can start creating a portfolio, so let’s ask Gemini that.</p>
+<p>I inputed into the conversation, “How can I create a portfolio?”</p>
+</section>
+<section id="geminis-second-response" class="level1">
+<h1>Gemini’s Second Response</h1>
+<p>That is a critical step! A portfolio is not just a collection of your best work; it’s a strategic presentation of your skills, proving you can write effectively under different political constraints.</p>
+<p>Here is a step-by-step guide on how to create a compelling speechwriting portfolio for a political career:</p>
+<section id="define-your-political-voice" class="level3">
+<h3 class="anchored" data-anchor-id="define-your-political-voice">1. 🎯 Define Your Political “Voice”</h3>
+<p>Since you may not have written for a politician yet, you need to create samples that show you can adapt.</p>
+<ul>
+<li><strong>Choose a Persona:</strong> Select two different types of politicians (e.g., a progressive Senator and a moderate city council member) or two different types of political tones (e.g., highly optimistic/inspirational and pragmatic/policy-focused).</li>
+<li><strong>Write in Their Voice:</strong> Study the cadence, vocabulary, and common rhetorical devices of your chosen persona. Your goal is to show you can be a <strong>ghostwriter</strong>—adopting another person’s communication style.</li>
+</ul>
+</section>
+<section id="gather-diverse-samples-the-content" class="level3">
+<h3 class="anchored" data-anchor-id="gather-diverse-samples-the-content">2. 📝 Gather Diverse Samples (The Content)</h3>
+<p>A strong political writing portfolio showcases versatility, clarity, and persuasive power. Aim for <strong>3 to 5 strong samples</strong> that demonstrate a range of formats:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Sample Type</th>
+<th style="text-align: left;">Objective</th>
+<th style="text-align: left;">Key Skills Demonstrated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>The Stump Speech</strong></td>
+<td style="text-align: left;">A short, punchy speech (3-5 minutes) for a campaign rally or town hall. Focus on a single, core campaign message.</td>
+<td style="text-align: left;">Clarity, energy, brevity, emotional appeal, and use of rhetoric (e.g., the rule of three).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>The Policy Address</strong></td>
+<td style="text-align: left;">A longer speech (10-15 minutes) on a complex issue (e.g., healthcare, infrastructure, education). Must include facts and specific proposals.</td>
+<td style="text-align: left;">Research, credibility, the ability to simplify jargon, and the effective use of statistics/evidence.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>The Policy Narrative/Anecdote</strong></td>
+<td style="text-align: left;">A 300-500 word insert designed to be read within a larger speech. This is a story about an everyday constituent that humanizes a policy issue.</td>
+<td style="text-align: left;">Storytelling, emotional connection, and connecting policy to real-world impact.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>The Op-Ed or Campaign Memo</strong></td>
+<td style="text-align: left;">A 700-word piece for a newspaper or a persuasive memo to an internal staffer. This demonstrates your ability to write for the <em>eye</em> (not the <em>ear</em>).</td>
+<td style="text-align: left;">Logical argumentation, concise writing, and knowledge of journalistic/professional style.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>“Crisis” Talking Points</strong></td>
+<td style="text-align: left;">A one-page document listing 5-7 bullet points to be delivered by the politician in response to a sudden, negative news event.</td>
+<td style="text-align: left;">Speed, conciseness, damage control, and messaging discipline.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="present-your-work-professionally-the-format" class="level3">
+<h3 class="anchored" data-anchor-id="present-your-work-professionally-the-format">3. 🖼️ Present Your Work Professionally (The Format)</h3>
+<p>How you present the work is just as important as the writing itself.</p>
+<ul>
+<li><strong>Use an Online Platform:</strong> Use a simple, professional website builder (like Google Sites, Squarespace, or a dedicated writing portfolio service) to host your work. This makes it easy to share.</li>
+<li><strong>Provide Context for Each Piece:</strong> For every sample, include a brief introductory note, answering these questions:
+<ul>
+<li><strong>The Scenario:</strong> (e.g., “This is a five-minute speech for Mayor Jane Doe at the annual Small Business Luncheon.”)</li>
+<li><strong>The Goal:</strong> (e.g., “The primary objective is to persuade the audience to support the Mayor’s new tax incentive proposal and encourage them to vote in the upcoming municipal election.”)</li>
+<li><strong>The Challenge:</strong> (e.g., “The challenge was addressing concerns about the proposal’s cost while maintaining an optimistic tone.”)</li>
+</ul></li>
+<li><strong>Keep it Clean and Readable:</strong> Speeches are meant to be read aloud. Format your samples clearly:
+<ul>
+<li>Use a legible font (12pt or larger).</li>
+<li>Use <strong>bolding</strong> or <strong>ALL CAPS</strong> to indicate where the speaker should emphasize a word or phrase.</li>
+<li>Add stage directions where appropriate: <em>[PAUSE for applause]</em>, <em>[Slightly lower volume]</em>, <em>[Look up and smile]</em>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-final-touches" class="level3">
+<h3 class="anchored" data-anchor-id="the-final-touches">4. ✨ The Final Touches</h3>
+<ul>
+<li><strong>Professional Bio:</strong> Include a concise bio (1-2 paragraphs) that highlights your relevant education, experience (even non-political roles if they involve writing/communication), and your passion for public service.</li>
+<li><strong>Contact Information:</strong> Make it easy to reach you with a professional email address.</li>
+<li><strong>Read it Aloud:</strong> Before finalizing any speech sample, read it aloud (or have someone else read it) to ensure the rhythm and flow work well for spoken delivery. If it sounds awkward or too academic, it needs revision.</li>
+</ul>
+<p>Would you like some tips on effective rhetorical devices to use in your portfolio’s speech samples?</p>
+</section>
+</section>
+<section id="my-second-response" class="level1">
+<h1>My Second Response</h1>
+<p>With these tips, I feel more confident starting my portfolio. My plan is to draft one sample in each category—stump speech, policy address, policy anecdote, op-ed, and crisis talking points—while consciously incorporating at least one rhetorical device in each. Once drafted, I will host them on a clean, professional website and start seeking feedback from professors and peers.</p>
+</section>
+<section id="final-takeaways" class="level1">
+<h1>Final Takeaways</h1>
+<p>Becoming a political speechwriter requires a combination of education and practical experience. Equally important is a good portfolio even if you haven’t written for a politician yet. This whos diverse writing styles. Through this conversation with Gemini, I have learned that presentation matters, whether it is showcasing your portfolio online or networking with important people. Gemini seems to understand that and it is obvious in the advice that it gave me.</p>
+<p>However, it seems that Gemini’s advice is kind of broad; while it seems to understand the basics of how to get there, it lacks the details and practicality if that makes sense.</p>
+<p><img src="images.webp" class="img-fluid"></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/emilyp85\.github\.io\/comm4190_F25_Using_LLMs_Blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
